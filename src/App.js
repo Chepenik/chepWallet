@@ -14,27 +14,20 @@ function App() {
   const apiKey = process.env.REACT_APP_X_API_KEY;
 
   const getPrice = () => {
-    // Axios is a library that makes it easy to make http requests
-    // After we make a request, we can use the .then() method to handle the response asychronously
-    // This is an alternative to using async/await
     axios
       .get("https://api.coinbase.com/v2/prices/BTC-USD/spot")
-      // .then is a promise that will run when the API call is successful
       .then((res) => {
-        console.log(res.data.data.amount);
-        setPrice(res.data.data.amount);
+        const priceWithTwoDecimals = Number(res.data.data.amount).toFixed(2);
+        setPrice(priceWithTwoDecimals);
         updateChartData(res.data.data.amount);
       })
-      // .catch is a promise that will run if the API call fails
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.log(err));
   };
 
   const getWalletBalance = () => {
     // ToDo: Lookup how to move the X-API-Key to a .env file to keep it secret for when we push to Github
     const headers = {
-      "X-Api-Key": apiKey,
+      "X-Api-Key": "383e3fed4420455db975ed44f1049504",
     };
     axios
       .get("https://legend.lnbits.com/api/v1/wallet", { headers })
